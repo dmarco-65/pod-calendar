@@ -5,12 +5,144 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
-    <!--    <changeSet id="1749913530510-1" author="Zoltounet">-->
-    <!--        &lt;!&ndash; Création d'une nouvelle table &ndash;&gt;-->
-    <!--        <createTable tableName="user">-->
-    <!--            <column name="id" type="bigint" autoIncrement="true">-->
-    <!--                <constraints primaryKey="true" nullable="false"/>-->
-    <!--            </column>-->
-    <!--        </createTable>-->
-    <!--    </changeSet>-->
+    <changeSet id="1749913530510-1" author="Zoltounet">
+        <preConditions>
+            <not>
+                <tableExists tableName="user"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_user"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pseudo" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1749913530510-2" author="Zoltounet">
+        <createIndex indexName="idx_user_email" tableName="user">
+            <column name="email"/>
+        </createIndex>
+        <createIndex indexName="idx_user_pseudo" tableName="user">
+            <column name="pseudo"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet id="1749913530510-4" author="Zoltounet">
+        <preConditions>
+            <not>
+                <tableExists tableName="survey"/>
+            </not>
+        </preConditions>
+        <createTable tableName="survey">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_survey"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)"/>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_survey_user"
+                             references="user(id)"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1749913530510-5" author="Zoltounet">
+        <preConditions>
+            <not>
+                <tableExists tableName="question"/>
+            </not>
+        </preConditions>
+        <createTable tableName="question">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_question"/>
+            </column>
+            <column name="label" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_required" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rank_order" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="survey_id" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_question_survey"
+                             references="survey(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1749913530510-6" author="Zoltounet">
+        <createIndex indexName="idx_survey_created_by" tableName="survey">
+            <column name="created_by"/>
+        </createIndex>
+        <createIndex indexName="idx_question_survey" tableName="question">
+            <column name="survey_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1749913530510-3" author="Zoltounet">
+        <preConditions>
+            <tableExists tableName="survey"/>
+            <tableExists tableName="user"/>
+            <not>
+                <tableExists tableName="user_survey"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_survey">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_survey_user"
+                             references="user(id)"/>
+            </column>
+            <column name="survey_id" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_survey_survey"
+                             references="survey(id)"/>
+            </column>
+            <column name="responded_at" type="timestamp"/>
+        </createTable>
+
+        <createIndex indexName="idx_user_survey_user"
+                     tableName="user_survey">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex indexName="idx_user_survey_survey"
+                     tableName="user_survey">
+            <column name="survey_id"/>
+        </createIndex>
+    </changeSet>
+
 </databaseChangeLog>
