@@ -2,6 +2,7 @@ package entity.survey;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import utils.QuestionTypeEnum;
 
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class Question {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private QuestionType type;
+    private QuestionTypeEnum type;
 
     @Column(nullable = false)
     private boolean isRequired;

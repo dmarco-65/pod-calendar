@@ -1,6 +1,6 @@
-package entity.survey;
+package utils;
 
-public enum QuestionType {
+public enum QuestionTypeEnum {
     //    SINGLE_CHOICE,
 //    MULTIPLE_CHOICE,
 //    TEXT,

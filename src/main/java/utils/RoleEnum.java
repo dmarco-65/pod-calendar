@@ -1,10 +1,11 @@
-package entity.user;
+package utils;
 
 
 public enum RoleEnum {
     ADMIN(1),
     GAME_MASTER(2),
-    PLAYER(3);
+    PLAYER(3),
+    INACTIVE(4);
 
     private final int id;
 
@@ -40,6 +41,7 @@ public enum RoleEnum {
                     PermissionEnum.VIEW_RESULT,
                     PermissionEnum.ANSWER_SONDAGE
             };
+            case INACTIVE -> new PermissionEnum[]{};
         };
     }
 }

@@ -1,4 +1,4 @@
-package entity.user;
+package utils;
 
 public enum PermissionEnum {
     CREATE_SONDAGE,

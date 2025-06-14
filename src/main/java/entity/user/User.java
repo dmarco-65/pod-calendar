@@ -2,6 +2,7 @@ package entity.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import utils.RoleEnum;
 
 import java.util.UUID;
 
