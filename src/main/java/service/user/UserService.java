@@ -1,6 +1,5 @@
 package service.user;
 
-import utils.RoleEnum;
 import vo.user.UserVO;
 
 import java.util.List;
@@ -15,8 +14,6 @@ public interface UserService {
     UserVO updateUser(UserVO userVO);
 
     Boolean deleteUserUuid(UUID id);
-
-    List<UserVO> getByRoles(List<RoleEnum> roles);
 
 
 }

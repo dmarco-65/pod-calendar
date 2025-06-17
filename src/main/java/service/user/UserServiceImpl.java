@@ -3,13 +3,14 @@ package service.user;
 import entity.user.User;
 import jakarta.transaction.Transactional;
 import mapper.user.UserMapper;
+import org.springframework.stereotype.Service;
 import repository.UserRepository;
-import utils.RoleEnum;
 import vo.user.UserVO;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -47,10 +48,4 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.existsById(id);
     }
 
-    @Override
-    public List<UserVO> getByRoles(List<RoleEnum> roles) {
-//        List<int[]> rolesIds = roles.stream().map(RoleEnum::getId).map(id -> new int[]{id}).toList();
-//        List<User> users = this.userRepository.findByRoleIdContaining(rolesIds);
-        return userMapper.toVOList(null);
-    }
 }
